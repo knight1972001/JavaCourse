@@ -5,7 +5,7 @@ public class BT1 {
     public static void main(String[] args) {
         int a,b;
         Scanner input = new Scanner(System.in);
-        System.out.print("Input first number: ");
+        System.out.print("Inpdfhdjkfut first number: ");
         a = input.nextInt();
         System.out.print("Input second number: ");
         b= input.nextInt();
