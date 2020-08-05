@@ -8,5 +8,6 @@ public class BT2 {
         n=input.nextInt();
         System.out.println(n + " + " + (n*10+n) + " + " + (n*100+n*10+n) + " = " + (n+(n*10+n)+(n*100+n*10+n)));
         System.out.println("End program");
+        System.out.println("Hi guys");
     }
 }
