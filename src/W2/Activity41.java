@@ -1,6 +1,6 @@
 package W2;
 import java.util.Scanner;
-public class Activity31 {
+public class Activity41 {
     public static void main(String[] args) {
         int temp1=0,temp2=1,n=0;
         Scanner input = new Scanner(System.in);
