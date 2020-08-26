@@ -45,44 +45,48 @@ public class StoreManagement {
                     System.out.println(toString());
                     break;
                 case 2:
-                    System.out.println("Enter the Store Code: ");
-                    int code = getInRanger(stores.size(), 1);
-                    code--;
-                    int checkSubOption = 0;
-                    do {
-                        int optionSubOption = subMenu1.run();
-                        switch (optionSubOption) {
-                            case 1:
-                                stores.get(code).displayInfo();
-                                break;
-                            case 2:
-                                System.out.print("Enter the new name: ");
-                                String name = input.nextLine();
-                                stores.get(code).setName(name);
-                                System.out.println("Successful Changed!\n");
-                                stores.get(code).displayInfo();
-                                break;
-                            case 3:
-                                System.out.println("Enter the new address: ");
-                                String address = input.nextLine();
-                                stores.get(code).setAddress(address);
-                                System.out.println("Successful Changed!\n");
-                                stores.get(code).displayInfo();
-                                break;
-                            case 4:
-                                stores.get(code).displayAllPhone();
-                                break;
-                            case 5:
-                                stores.get(code).addPhones();
-                                break;
-                            case 6:
-                                stores.get(code).removePhone();
-                                break;
-                            case 7:
-                                checkSubOption=1;
-                                break;
-                        }
-                    } while (checkSubOption == 0);
+                    if(stores.size()!=0){
+                        System.out.println("Enter the Store Code: ");
+                        int code = getInRanger(stores.size(), 1);
+                        code--;
+                        int checkSubOption = 0;
+                        do {
+                            int optionSubOption = subMenu1.run();
+                            switch (optionSubOption) {
+                                case 1:
+                                    stores.get(code).displayInfo();
+                                    break;
+                                case 2:
+                                    System.out.print("Enter the new name: ");
+                                    String name = input.nextLine();
+                                    stores.get(code).setName(name);
+                                    System.out.println("Successful Changed!\n");
+                                    stores.get(code).displayInfo();
+                                    break;
+                                case 3:
+                                    System.out.println("Enter the new address: ");
+                                    String address = input.nextLine();
+                                    stores.get(code).setAddress(address);
+                                    System.out.println("Successful Changed!\n");
+                                    stores.get(code).displayInfo();
+                                    break;
+                                case 4:
+                                    stores.get(code).displayAllPhone();
+                                    break;
+                                case 5:
+                                    stores.get(code).addPhones();
+                                    break;
+                                case 6:
+                                    stores.get(code).removePhone();
+                                    break;
+                                case 7:
+                                    checkSubOption=1;
+                                    break;
+                            }
+                        } while (checkSubOption == 0);
+                    }else{
+                        System.out.println("You do not have any Store. Please Add!");
+                    }
                     break;
                 case 3:
                     addStore();
