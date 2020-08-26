@@ -58,6 +58,7 @@ public class Store {
         int selection = getInRanger(smartPhones.size(), 1);
         selection--;
         smartPhones.remove(selection);
+        count--;
         System.out.println("Successful Removed!");
 
     }

@@ -25,7 +25,7 @@ public class StoreManagement {
         mainMenu.add("The store has the highest/lowest sales.");
         mainMenu.add("The number of phones of all stores that have Bluetooth/5G/Wifi.");
         mainMenu.add("Exit");
-        subMenu1 = new Menu("Input the Store code: ");
+        subMenu1 = new Menu("Store Detail: ");
         subMenu1.add("Detail of Store.");
         subMenu1.add("Change the Store's name.");
         subMenu1.add("Change the Store's address.");
@@ -49,6 +49,7 @@ public class StoreManagement {
                         System.out.println("Enter the Store Code: ");
                         int code = getInRanger(stores.size(), 1);
                         code--;
+                        System.out.println("Accessing "+stores.get(code).getName());
                         int checkSubOption = 0;
                         do {
                             int optionSubOption = subMenu1.run();
@@ -177,13 +178,18 @@ public class StoreManagement {
     }
 
     public void removeStore() {
-        System.out.println(toString());
-        System.out.print("Input the Store code you wanmt to remove: ");
-        int selection = getInRanger(stores.size(), 1);
-        selection--;
-        stores.remove(selection);
-        System.out.println("Successful Removed!");
-        System.out.println();
+        if(stores.size()!=0){
+            System.out.println(toString());
+            System.out.print("Input the Store code you wanmt to remove: ");
+            int selection = getInRanger(stores.size(), 1);
+            selection--;
+            stores.remove(selection);
+            count--;
+            System.out.println("Successful Removed!");
+            System.out.println();
+        }else{
+            System.out.println("You do not have any Store. Please add!");
+        }
 
     }
 
