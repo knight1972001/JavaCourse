@@ -190,7 +190,6 @@ public class StoreManagement {
         }else{
             System.out.println("You do not have any Store. Please add!");
         }
-
     }
 
     public int numberOfPhoneHave3Functions() {

@@ -1,16 +1,13 @@
 package Test;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         Scanner input = new Scanner(System.in);
-        String name = null;
-
-        if(name==null){
-            System.out.println("Ten trong");
-        }else{
-            System.out.println("Ten la: "+name);
-        }
+        int number;
+        System.out.print("Enter int: ");
     }
 }
