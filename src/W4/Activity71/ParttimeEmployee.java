@@ -7,7 +7,7 @@ public class ParttimeEmployee extends Employee {
     public ParttimeEmployee(int id, String name, int age, double workHourNumber) {
         super(id, name, age);
         this.workHourNumber = workHourNumber;
-        salary=this.workHourNumber*100;
+        salary = this.workHourNumber * 100;
     }
 
     public void setWorkHourNumber(double workHourNumber) {

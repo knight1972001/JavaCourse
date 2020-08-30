@@ -1,18 +1,10 @@
 package W4.Activity71;
 
-import java.text.ParseException;
-import java.util.Scanner;
-
-import static W4.Activity71.Ultis.getInt;
-import static W4.Activity71.Ultis.hasOrNot;
-
 public class FulltimeEmployee extends Employee {
     private double baseSalary = 0;
     private double OTSalary = 0;
     private boolean isManager = false; //e doi level sang isManager vi chi co 2 loai nhan vien. dung True False tien cho viec xu ly hon.
     private double overTimeDay = 0;
-    public int countFulltimeEmployees = 0;
-    Scanner input = new Scanner(System.in);
 
     public FulltimeEmployee(int id, String name, int age, boolean isManager, double overTimeDay) {
         super(id, name, age);
@@ -48,10 +40,6 @@ public class FulltimeEmployee extends Employee {
         } else {
             System.out.println("Unsuccessful Changed!\n");
         }
-    }
-
-    public int getID() {
-        return super.getId();
     }
 
     public double getTotalSalary() {

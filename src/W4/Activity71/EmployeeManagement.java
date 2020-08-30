@@ -1,6 +1,5 @@
 package W4.Activity71;
 
-import W4.Exercise64.Menu;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -9,22 +8,19 @@ import java.util.Scanner;
 
 import static W4.Activity71.Ultis.*;
 import static W4.Exercise64.Ultis.hasOrNot;
-import static java.lang.StrictMath.abs;
 
 public class EmployeeManagement {
     private String companyName = null;
     private int countEmployee = 0;
-    private final List<FulltimeEmployee> fulltimeEmployees = new ArrayList<>();
-    private final List<ParttimeEmployee> parttimeEmployees = new ArrayList<>();
+    private final List<Employee> employees = new ArrayList<>();
     Scanner input = new Scanner(System.in);
-
     Menu mainMenu;
     Menu subMenu1;
     Menu subMenu2;
 
     public EmployeeManagement(String companyName, int num) throws ParseException {
         this.companyName = companyName;
-        System.out.println("Welcome to "+companyName);
+        System.out.println("Welcome to " + companyName);
         for (int i = 0; i < num; i++) {
             System.out.println("- Employee num.(" + (i + 1) + "):");
             addEmployee();
@@ -60,49 +56,48 @@ public class EmployeeManagement {
                     displayFoundEmployee();
                     break;
                 case 3:
-                    int locate = findEmployeeLocate();
-                    if(locate!=0){
-                        if(locate<0){
-                            int checkSubOption=0;
-                            do{
-                                int subOption=subMenu1.run();
-                                switch(subOption){
-                                    case 1:
-                                        displayFoundEmployee(locate);
-                                        break;
-                                    case 2:
-                                        System.out.print("Enter new Work Hours Number: ");
-                                        double workHourNumber= getDouble();
-                                        parttimeEmployees.get(abs(locate)-1).setWorkHourNumber(workHourNumber);
-                                        break;
-                                    case 3:
-                                        checkSubOption=1;
-                                        break;
-                                }
-                            }while(checkSubOption==0);
-                        }else{
-                            int checkSubOption=0;
-                            do{
-                                int subOption=subMenu2.run();
-                                switch(subOption){
+                    int locate = findEmployeeID();
+                    if (locate > -1) {
+                        int checkSubOption = 0;
+                        if (employees.get(locate) instanceof FulltimeEmployee) {
+                            do {
+                                int subOption = subMenu2.run();
+                                switch (subOption) {
                                     case 1:
                                         displayFoundEmployee(locate);
                                         break;
                                     case 2:
                                         System.out.print("Is Manager? (Y/N): ");
                                         boolean isManager = hasOrNot();
-                                        fulltimeEmployees.get(locate-1).setManager(isManager);
+                                        ((FulltimeEmployee) employees.get(locate)).setManager(isManager);
                                         break;
                                     case 3:
                                         System.out.print("Number of Hours-Work: ");
                                         double workHourNumber = getDouble();
-                                        fulltimeEmployees.get(locate-1).setOverTimeDay(workHourNumber);
+                                        ((FulltimeEmployee) employees.get(locate)).setOverTimeDay(workHourNumber);
                                         break;
                                     case 4:
-                                        checkSubOption=1;
+                                        checkSubOption = 1;
                                         break;
                                 }
-                            }while(checkSubOption==0);
+                            } while (checkSubOption == 0);
+                        } else {
+                            do {
+                                int subOption = subMenu1.run();
+                                switch (subOption) {
+                                    case 1:
+                                        displayFoundEmployee(locate);
+                                        break;
+                                    case 2:
+                                        System.out.print("Enter new Work Hours Number: ");
+                                        double workHourNumber = getDouble();
+                                        ((ParttimeEmployee) employees.get(locate)).setWorkHourNumber(workHourNumber);
+                                        break;
+                                    case 3:
+                                        checkSubOption = 1;
+                                        break;
+                                }
+                            } while (checkSubOption == 0);
                         }
                     }
                     break;
@@ -121,26 +116,23 @@ public class EmployeeManagement {
                     }
                     break;
             }
-            }while (check == 0);
+        } while (check == 0);
     }
 
-    public void displayAll(){
-        if(countEmployee!=0){
-            for (int i = 0; i < fulltimeEmployees.size(); i++) {
-                System.out.println(fulltimeEmployees.get(i).toString());
+    public void displayAll() {
+        if (employees.size() != 0) {
+            for (Employee employee : employees) {
+                System.out.println(employee.toString());
             }
-            for (int i = 0; i < parttimeEmployees.size(); i++){
-                System.out.println(parttimeEmployees.get(i).toString());
-            }
-        }else{
+        } else {
             System.out.println("No Employees! Recruiting someone.\n");
         }
     }
 
     public void addEmployee() throws ParseException {
         countEmployee++;
-        boolean check = false;
-        int id = 0;
+        boolean check;
+        int id;
         System.out.println(" + Employee Private Information:");
         System.out.print("   Enter Employee ID: ");
         do {
@@ -163,97 +155,74 @@ public class EmployeeManagement {
             System.out.print("   Over Time Day: ");
             double overTimeDay = getDouble();
             FulltimeEmployee temp = new FulltimeEmployee(id, name, age, isManager, overTimeDay);
-            fulltimeEmployees.add(temp);
+            employees.add(temp);
         } else {
             System.out.print("   Number of Hours-Work: ");
             double workHourNumber = getDouble();
             ParttimeEmployee temp = new ParttimeEmployee(id, name, age, workHourNumber);
-            parttimeEmployees.add(temp);
+            employees.add(temp);
         }
         System.out.println("Successful Added!\n");
     }
 
-    public boolean findExistEmployee(double id) throws ParseException {
+    public boolean findExistEmployee(int id) {
         boolean exist = false;
-        for (int i = 0; i < parttimeEmployees.size(); i++) {
-            if (parttimeEmployees.get(i).getId() == id) {
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
                 exist = true;
                 break;
-            }
-        }
-        if (!exist) {
-            for (int i = 0; i < fulltimeEmployees.size(); i++) {
-                if (fulltimeEmployees.get(i).getId() == id) {
-                    exist = true;
-                    break;
-                }
             }
         }
         return exist;
     }
 
-    public int findEmployeeLocate() throws ParseException {
-        boolean check = false;
-        int locate = 0;//locate Employee thuoc ve Full or Part-Time. locate < 0 --> partime. locate > 0 fulltime.
+
+    public int findEmployeeID() throws ParseException {
         System.out.print("   Enter Employee ID: ");
         int id = getInt();
-        check = findExistEmployee(id);
+        int locate = -1;
+        boolean check = false;
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getId() == id) {
+                locate = i;
+                check = true;
+                break;
+            }
+        }
         if (!check) {
             System.out.println("*** This ID Employee is not Exists. Please check!\n");
-            locate=0;
-        } else {
-            for (int i = 0; i < parttimeEmployees.size(); i++) {
-                if (parttimeEmployees.get(i).getId() == id) {
-                    locate = (i+1)*(-1);
-                    break;
-                }
-            }
-            if (locate == 0) {
-                for (int i = 0; i < fulltimeEmployees.size(); i++) {
-                    if (fulltimeEmployees.get(i).getId() == id) {
-                        locate = i+1;
-                        break;
-                    }
-                }
-            }
+            locate = -1;
         }
         return locate;
     }
 
     public void displayFoundEmployee() throws ParseException {
-        int idLocate = findEmployeeLocate();
-        if (idLocate < 0) {
-            System.out.println(parttimeEmployees.get(abs(idLocate)-1).toString());
+        int locate = findEmployeeID();
+        if (employees.get(locate) instanceof FulltimeEmployee) {
+            System.out.println(employees.get(locate).toString());
         }
-        if (idLocate > 0) {
-            System.out.println(fulltimeEmployees.get(idLocate-1).toString());
-        }
-    }
-
-    public void displayFoundEmployee(int idLocate){
-        if (idLocate < 0) {
-            System.out.println(parttimeEmployees.get(abs(idLocate)-1).toString());
-        }
-        if (idLocate > 0) {
-            System.out.println(fulltimeEmployees.get(idLocate-1).toString());
+        if (employees.get(locate) instanceof ParttimeEmployee) {
+            System.out.println(employees.get(locate).toString());
         }
     }
 
+    public void displayFoundEmployee(int id) {
+        if (employees.get(id) instanceof FulltimeEmployee) {
+            System.out.println(employees.get(id).toString());
+        }
+        if (employees.get(id) instanceof ParttimeEmployee) {
+            System.out.println(employees.get(id).toString());
+        }
+    }
 
     public void removeEmployee() throws ParseException {
-        int idLocate = findEmployeeLocate();
-        if (idLocate < 0) {
-            parttimeEmployees.remove(abs(idLocate)-1);
+        int idLocate = findEmployeeID();
+        if (idLocate > -1) {
+            employees.remove(idLocate);
             System.out.println("Successful Removed!");
-        }
-        if (idLocate > 0) {
-            fulltimeEmployees.remove(idLocate-1);
-            System.out.println("Successful Removed!");
-        }
-        if(idLocate==0){
+            countEmployee--;
+        } else {
             System.out.println("Unsuccessful Removed!");
         }
-
-        countEmployee--;
     }
 }
