@@ -69,5 +69,14 @@ public class Ultis {
         return has;
     }
 
+    public static String convertMoney(double money){
+        String result;
+        if (money> 1000) { //format tien --> de doc hon xiu
+            result = money / 1000 + "M\n";
+        } else {
+            result = money + "K\n";
+        }
+        return result;
+    }
 
 }

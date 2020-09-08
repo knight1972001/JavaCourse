@@ -1,6 +1,8 @@
 package W4.Activity71;
 
 
+import W3.Activity63.Store;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +33,17 @@ public class EmployeeManagement {
         mainMenu.add("Edit Employee Information.");
         mainMenu.add("Add Employee.");
         mainMenu.add("Remove Employee.");
+        mainMenu.add("Highest/Lowest Salary Employee Detail.");
         mainMenu.add("Exit!");
         subMenu1 = new Menu("Edit Part-Time Employee Information.");
         subMenu1.add("Display Information.");
-        subMenu1.add("Change the Number of Hours-Work.");
+        subMenu1.add("Change the Total Working Shifts.");
+        subMenu1.add("Change the Base Salary.");
         subMenu1.add("Return!");
         subMenu2 = new Menu("Edit Full-Time Employee Information.");
         subMenu2.add("Display Information.");
-        subMenu2.add("Change the Level of Employee.");
-        subMenu2.add("Change the Over Time Day.");
+        subMenu2.add("Change the Daily Salary");
+        subMenu2.add("Change the Total Working Days.");
         subMenu2.add("Return!");
     }
 
@@ -67,14 +71,14 @@ public class EmployeeManagement {
                                         displayFoundEmployee(locate);
                                         break;
                                     case 2:
-                                        System.out.print("Is Manager? (Y/N): ");
-                                        boolean isManager = hasOrNot();
-                                        ((FulltimeEmployee) employees.get(locate)).setManager(isManager);
+                                        System.out.print("Enter the new Daily Salary: ");
+                                        double dailySalary = getDouble();
+                                        ((FulltimeEmployee) employees.get(locate)).setDailySalary(dailySalary);
                                         break;
                                     case 3:
-                                        System.out.print("Number of Hours-Work: ");
-                                        double workHourNumber = getDouble();
-                                        ((FulltimeEmployee) employees.get(locate)).setOverTimeDay(workHourNumber);
+                                        System.out.print("Enter the new Total Working Days: ");
+                                        int totalWorkingHours = getInt();
+                                        ((FulltimeEmployee) employees.get(locate)).setTotalWorkingHours(totalWorkingHours);
                                         break;
                                     case 4:
                                         checkSubOption = 1;
@@ -89,11 +93,15 @@ public class EmployeeManagement {
                                         displayFoundEmployee(locate);
                                         break;
                                     case 2:
-                                        System.out.print("Enter new Work Hours Number: ");
-                                        double workHourNumber = getDouble();
-                                        ((ParttimeEmployee) employees.get(locate)).setWorkHourNumber(workHourNumber);
+                                        System.out.print("Enter the new Total Working Shifts: ");
+                                        int totalWorkingShifts = getInt();
+                                        ((ParttimeEmployee) employees.get(locate)).setTotalWorkingShift(totalWorkingShifts);
                                         break;
                                     case 3:
+                                        System.out.print("Enter the new Base Salary: ");
+                                        double baseSalary = getDouble();
+                                        ((ParttimeEmployee) employees.get(locate)).setBaseSalary(baseSalary);
+                                    case 4:
                                         checkSubOption = 1;
                                         break;
                                 }
@@ -108,6 +116,9 @@ public class EmployeeManagement {
                     removeEmployee();
                     break;
                 case 6:
+                    highestLowestSalary();
+                    break;
+                case 7:
                     System.out.print("Exiting the App. Please confirm (Y/N): ");
                     boolean exit = hasOrNot();
                     if (exit) {
@@ -117,6 +128,30 @@ public class EmployeeManagement {
                     break;
             }
         } while (check == 0);
+    }
+
+    public void highestLowestSalary() {
+        double tempSalary = 0;
+        Employee tempEmployee = null;
+        for (int i = 0; i < employees.size(); i++) {
+            if (tempSalary < employees.get(i).calculateSalary()) {
+                tempSalary = employees.get(i).calculateSalary();
+                tempEmployee = employees.get(i);
+            }
+        }
+        System.out.println("Highest Salary Employee Detail:");
+        System.out.println(tempEmployee.toString());
+
+        tempSalary = employees.get(0).calculateSalary();
+        tempEmployee = employees.get(0);
+        for (int i = 1; i < employees.size(); i++) {
+            if (tempSalary > employees.get(i).calculateSalary()) {
+                tempSalary = employees.get(i).calculateSalary();
+                tempEmployee = employees.get(i);
+            }
+        }
+        System.out.println("Lowest Salary Employee Detail:");
+        System.out.println(tempEmployee.toString());
     }
 
     public void displayAll() {
@@ -146,20 +181,24 @@ public class EmployeeManagement {
         String name = input.nextLine();
         System.out.print("   Enter Employee Age: ");
         int age = getInt();
+        System.out.print("   Enter Employee Identification Number: ");
+        String identificationNumber = input.nextLine();
         System.out.println(" + Employee Work-Information:");
         System.out.print("   Full-Time Employee(Y) or Part-time Employee(N)? Enter Y/N: ");
         boolean isFullTime = hasOrNot();
         if (isFullTime) {
-            System.out.print("   Is Manager? (Y/N): ");
-            boolean isManager = hasOrNot();
-            System.out.print("   Over Time Day: ");
-            double overTimeDay = getDouble();
-            FulltimeEmployee temp = new FulltimeEmployee(id, name, age, isManager, overTimeDay);
+            System.out.print("   Enter Total Working Hours: ");
+            int totalWorkingHours = getInt();
+            System.out.print("   Enter Daily Salary: ");
+            double dailySalary = getDouble();
+            FulltimeEmployee temp = new FulltimeEmployee(id, name, age, identificationNumber, totalWorkingHours, dailySalary);
             employees.add(temp);
         } else {
-            System.out.print("   Number of Hours-Work: ");
-            double workHourNumber = getDouble();
-            ParttimeEmployee temp = new ParttimeEmployee(id, name, age, workHourNumber);
+            System.out.print("   Enter Total Working Shifts: ");
+            int totalWorkingShifts = getInt();
+            System.out.print("   Enter Base Salary: ");
+            double baseSalary = getDouble();
+            ParttimeEmployee temp = new ParttimeEmployee(id, name, age, identificationNumber, totalWorkingShifts, baseSalary);
             employees.add(temp);
         }
         System.out.println("Successful Added!\n");
